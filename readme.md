@@ -19,3 +19,10 @@ Post:
   GET: filter.
 /delete_post
 
+Database:
+Post Table:
+id
+content
+is_anon
+user_id
+
