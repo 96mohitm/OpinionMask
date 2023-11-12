@@ -5,6 +5,24 @@ class PostService:
   @staticmethod
   def get_filtered_posts(user, order_by='-created_at'):
     return Post.objects.filter(created_by=user).order_by(order_by)
+  
+  @staticmethod
+  def format_post_data(posts):
+    serialized_data = []
+    for post in posts:
+        serialized_post = {
+            'id': post.id,
+            'content': post.content,
+            'created_at': post.created_at,
+            'updated_at': post.updated_at,
+            'is_anon': post.is_anon,
+        }
+        if post.is_anon:
+            serialized_post['created_by'] = 'Anonymous'
+        else:
+            serialized_post['created_by'] = post.created_by.username
+        serialized_data.append(serialized_post)
+    return serialized_data
 
   @staticmethod
   def create_post(data, user):
@@ -27,8 +45,12 @@ class PostService:
 
   @staticmethod
   def delete_post(post_id, user):
-      post = PostService.get_post_by_id(post_id, user)
-      if post:
-          post.delete()
+    post = PostService.get_post_by_id(post_id, user)
+    if post:
+      # Check if the user trying to delete the post is the owner
+      if post.created_by == user:
+        post.delete()
       else:
-          raise ValueError("Post not found")
+        raise ValueError("You don't have permission to delete this post")
+    else:
+      raise ValueError("Post not found")

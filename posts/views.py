@@ -13,8 +13,8 @@ class PostListView(APIView):
     def get(self, request):
         order_by = request.GET.get("ordering", "-created_at")
         posts = PostService.get_filtered_posts(request.user, order_by)
-        serializer = PostSerializer(posts, many=True)
-        return Response(serializer.data)
+        serialized_data = PostService.format_post_data(posts)
+        return Response(serialized_data)
 
     def post(self, request):
         request.data['created_by'] = request.user.id
