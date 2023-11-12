@@ -25,8 +25,8 @@ class PostService:
     return serialized_data
 
   @staticmethod
-  def create_post(data, user):
-    return Post.objects.create(created_by=user, **data)
+  def create_post(data):
+    return Post.objects.create(**data)
 
   @staticmethod
   def get_post_by_id(post_id, user):

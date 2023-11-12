@@ -19,8 +19,9 @@ class PostListView(APIView):
     def post(self, request):
         request.data['created_by'] = request.user.id
         serializer = PostSerializer(data=request.data, context={'request': request})
+
         if serializer.is_valid():
-            serializer.save()
+            PostService.create_post(serializer.validated_data)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         error_message = format_errors(serializer.errors)
