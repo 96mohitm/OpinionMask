@@ -1,8 +1,32 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PostList from './PostList';
 import CreatePostForm from './CreatePostForm';
+import { fetchPosts } from '../../api/posts';
+
+type Post = {
+  id: number,
+  content: string,
+  created_by: string,
+  created_at: string,
+  updated_at: string,
+};
+
 
 const PostPage = () => {
+  const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
+  
+  async function fetchData() {
+    try {
+      const data = await fetchPosts();
+      setFilteredPosts(data);
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+    }
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <div className="bg-primary text-white">
@@ -18,12 +42,11 @@ const PostPage = () => {
             How are you doing today? Would you like to share something with the community 🤗
           </p>
         </div>
-
-        <CreatePostForm />
-        <PostList />
+        <CreatePostForm fetchData={fetchData} />
+        <PostList filteredPosts={filteredPosts} />
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default PostPage;

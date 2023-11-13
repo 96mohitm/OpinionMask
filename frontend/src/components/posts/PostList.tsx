@@ -10,32 +10,22 @@ type Post = {
   updated_at: string,
 }
 
-const PostList = () => {
-  const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
-  
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const data = await fetchPosts();
-        setFilteredPosts(data);
-      } catch (error) {
-        console.error("Error fetching posts:", error);
-      }
-    }
-    fetchData();
-  }, []);
+type PostListProps = {
+  filteredPosts: Post[];
+};
+
+const PostList: React.FC<PostListProps> = ({ filteredPosts }) => {
 
   return (
     <div>
       <div>
-      {
-        filteredPosts.map(post => (
+      { filteredPosts && filteredPosts.map(post => (
           <PostDetail key={post.id} post={post} />
         ))
       }
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default PostList;

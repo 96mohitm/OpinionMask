@@ -11,3 +11,12 @@ export const fetchPosts = async () => {
     throw error;
   }
 };
+
+export const createPost = async (data: any) => {
+  try {
+    const response = await axiosInstance.post('posts/', data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
