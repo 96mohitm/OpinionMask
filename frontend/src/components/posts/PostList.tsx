@@ -17,14 +17,14 @@ type PostListProps = {
 const PostList: React.FC<PostListProps> = ({ filteredPosts }) => {
 
   return (
-    <div>
-      <div>
+    <>
+      <>
       { filteredPosts && filteredPosts.map(post => (
           <PostDetail key={post.id} post={post} />
         ))
       }
-      </div>
-    </div>
+      </>
+    </>
   );
 };
 
