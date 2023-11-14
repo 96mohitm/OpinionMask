@@ -12,8 +12,10 @@ class PostListView(APIView):
 
     def get(self, request):
         order_by = request.GET.get("ordering", "-created_at")
-        posts = PostService.get_filtered_posts(request.user, order_by)
+        my_post = request.GET.get("my_post", "false").lower() == "true"
+        posts = PostService.get_filtered_posts(request.user, order_by, my_post)
         serialized_data = PostService.format_post_data(posts)
+        
         return Response(serialized_data)
 
     def post(self, request):

@@ -11,13 +11,13 @@ type Post = {
   updated_at: string,
 };
 
-
 const PostPage = () => {
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
-  
-  async function fetchData() {
+  const [myPost, setMyPost] = useState<boolean>(false);
+
+  async function fetchData(myPost: boolean = false) {
     try {
-      const data = await fetchPosts();
+      const data = await fetchPosts(myPost);
       setFilteredPosts(data);
     } catch (error) {
       console.error("Error fetching posts:", error);
@@ -27,6 +27,17 @@ const PostPage = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    fetchPosts(myPost)
+      .then(data => {
+        setFilteredPosts(data);
+      });
+  }, [myPost])
+
+  const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setMyPost(event.target.value === 'my');
+  };
 
   return (
     <div className="bg-primary text-white min-h-screen flex items-center justify-center">
@@ -45,10 +56,19 @@ const PostPage = () => {
           </div>
         </div>
         <CreatePostForm fetchData={fetchData} />
+        <div className="mb-4">
+          <select
+            className="mt-1 block w-32 py-2 px-3 border border-black bg-primary text-[#7f8084] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-white focus:border-white"
+            value={myPost ? 'my' : 'all'}
+            onChange={handleFilterChange}
+          >
+            <option value="my">My Posts</option>
+            <option value="all">All Posts</option>
+          </select>
+        </div>
         <PostList filteredPosts={filteredPosts} />
       </div>
     </div>
-
   );
 };
 

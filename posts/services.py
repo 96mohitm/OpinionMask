@@ -3,8 +3,11 @@ from .models import Post
 
 class PostService:
   @staticmethod
-  def get_filtered_posts(user, order_by='-created_at'):
-    return Post.objects.filter(created_by=user).order_by(order_by)
+  def get_filtered_posts(user, order_by='-created_at', my_post=False):
+    if my_post:
+        return Post.objects.filter(created_by=user).order_by(order_by)
+    else:
+        return Post.objects.all().order_by(order_by)
   
   @staticmethod
   def format_post_data(posts):
