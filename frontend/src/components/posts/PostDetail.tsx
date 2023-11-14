@@ -1,14 +1,18 @@
 import React from 'react'
+import { formatDistanceToNow } from 'date-fns';
 
 type PostDetailProps = {
   post: {
     id: number,
     content: string,
     created_by: string,
+    created_at: string,
   }
 }
 
 const PostDetail: React.FC<PostDetailProps> = ({ post }) => {
+  const timeAgo = formatDistanceToNow(new Date(post.created_at), { addSuffix: true });
+
   return (
     <div className="w-[700px] h-[250px]">
       <div className=" w-[704px] h-[250px] top-0 left-0">
@@ -38,7 +42,7 @@ const PostDetail: React.FC<PostDetailProps> = ({ post }) => {
               {post.created_by}
             </div>
             <div className="absolute top-[25px] left-[60px] [font-family:'Inter-Medium',Helvetica] font-medium text-[#7f8084] text-[14px] tracking-[0] leading-[normal]">
-              5mins ago
+              {timeAgo}
             </div>
             <img className="absolute w-[44px] h-[44px] top-0 left-0 object-cover" alt="Ellipse" src="default_profile_pic.png" />
           </div>
