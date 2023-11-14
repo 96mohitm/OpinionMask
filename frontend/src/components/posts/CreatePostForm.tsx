@@ -7,10 +7,10 @@ interface APIErrorResponse {
 }
 type PostFormData = {
   content: string,
-  isAnon: boolean,
+  is_anon: boolean,
 }
 
-const defaultState = { content: '', isAnon: false};
+const defaultState = { content: '', is_anon: false };
 
 type CreatePostFormProps = {
   fetchData: () => void;
@@ -20,7 +20,7 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({ fetchData }) => {
   const [formData, setFormData] = useState<PostFormData>(defaultState);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit =async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     try {
@@ -61,6 +61,21 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({ fetchData }) => {
                   </div>
                 </div>
               </div>
+            </div>
+            <div className="absolute w-[662px] h-[48px] top-[146px] left-[20px] flex items-center">
+              <input
+                type="checkbox"
+                id="anonymousCheckbox"
+                className="mr-2"
+                checked={formData.is_anon || false}
+                onChange={(e) => setFormData({ ...formData, is_anon: e.target.checked })}
+              />
+              <label
+                htmlFor="anonymousCheckbox"
+                className="[font-family:'Inter-Regular',Helvetica] font-normal text-[#c5c7ca] text-[16px] tracking-[0] leading-[normal] cursor-pointer"
+              >
+                Post Anonymously
+              </label>
             </div>
             <div className="absolute w-[113px] h-[43px] top-[156px] left-[569px]">
               <button
