@@ -3,21 +3,21 @@ import axiosInstance from './api/axiosInstance';
 
 
 interface AuthContextType {
-    isAuthenticated: boolean | null;
+    isAuthenticated: boolean;
     login: () => void;
     logout: () => void;
     loading: boolean;
 }
 
 const defaultContext: AuthContextType = {
-    isAuthenticated: null,
+    isAuthenticated: false,
     login: () => {
         console.warn('login function was called without a AuthProvider.');
     },
     logout: () => {
         console.warn('logout function was called without a AuthProvider.');
     },
-    loading: true,
+    loading: false,
 };
 
 
@@ -46,6 +46,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     // On initial load, check if the user is authenticated
+    setLoading(true);
     axiosInstance.get('/users/isAuthenticated/')
         .then(() => {
             setIsAuthenticated(true);

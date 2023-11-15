@@ -24,7 +24,13 @@ const Login: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await loginUser({ username, password });
+    loginUser({ username, password })
+      .then(() => {
+        console.info("logged in successfully!");
+      })
+      .catch((error)=> {
+        console.error('Error while logging in.');
+      })
   };
 
   return (

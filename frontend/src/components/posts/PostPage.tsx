@@ -18,7 +18,7 @@ const PostPage = () => {
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
   const [myPost, setMyPost] = useState<boolean>(false);
   const [anonFilter, setAnonFilter] = useState("ALL");
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, loading } = useAuth();
   const [username, setUsename] = useState<string>("");
   const navigate = useNavigate();
 
@@ -33,10 +33,10 @@ const PostPage = () => {
   }
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!loading && !isAuthenticated) {
       navigate('/login');
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, navigate, loading]);
 
   useEffect(() => {
     fetchData();
@@ -70,6 +70,10 @@ const PostPage = () => {
   const handleAnonFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setAnonFilter(event.target.value);
   };
+
+  if (loading) return (
+    <h2> loading...</h2>
+  );
 
   return (
     <div className="bg-primary text-white min-h-screen flex items-center justify-center">
