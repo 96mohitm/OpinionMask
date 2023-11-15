@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { loginUser } from '../../api/auth';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../Auth';
-import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
+import Input from '../common/Input';
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -42,18 +42,16 @@ const Login: React.FC = () => {
             <label htmlFor="username" className="mb-1 text-sm font-medium text-[#c5c7ca]">
               Email or Username
             </label>
-            <input
-              autoFocus
+            <Input
               id="username"
               type="text"
-              placeholder="Enter your email or username"
+              placeholder="email or username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="p-2 bg-[#27292D] rounded-[4px] border-[1.5px] border-solid border-[#35373B] px-3 py-3 text-[#7F8084] text-base font-normal font-sans placeholder:text-[#7F8084] focus:outline-none focus:ring-2 focus:ring-[#969696] focus:border-transparent"
             />
           </div>
           <div className="flex flex-col">
-            <div className="flex justify-between items-center mb-2">
+            <div className="flex justify-between items-center mb-1">
               <label htmlFor="password" className="mb-1 text-sm font-medium text-[#c5c7ca]">
                 Password
               </label>
@@ -62,24 +60,13 @@ const Login: React.FC = () => {
               </Link>
             </div>
             <div className="flex justify-between items-center mb-2 relative">
-              <input
+              <Input
                 id="password"
                 type={showPassword ? 'text' : 'password'}
-                placeholder="Enter your password"
+                placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="p-2 w-full bg-[#27292D] rounded-[4px] border-[1.5px] border-solid border-[#35373B] px-3 py-3 text-[#7F8084] text-base font-normal font-sans placeholder:text-[#7F8084] focus:outline-none focus:ring-2 focus:ring-[#969696] focus:border-transparent"
               />
-              <div
-                className="absolute top-1/2 transform -translate-y-1/2 right-4 cursor-pointer"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? (
-                  <AiFillEyeInvisible color="#7F8084" size={20} />
-                ) : (
-                  <AiFillEye color="#7F8084" size={20} />
-                )}
-              </div>
             </div>
           </div>
           <div>
