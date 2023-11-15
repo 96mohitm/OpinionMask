@@ -17,6 +17,7 @@
     - [API Endpoints:](#api-endpoints)
     - [Database Design:](#database-design)
       - [Post Table](#post-table)
+  - [Backend Architecture:](#backend-architecture)
   - [Security:](#security)
 
 
@@ -75,6 +76,10 @@ Note: I am using `Python 3.11.4`
    ```
 4. Application should be up at: http://localhost:3000/
 
+5. Sample Login:
+
+   username: `mohitm`
+   password: `12345678`
 
 ### Running Unit tests:
 Running Unit tests:
@@ -107,6 +112,13 @@ python manage.py test posts
 | created_at  | DateTimeField   | Timestamp for post creation.          |                                        
 | updated_at  | DateTimeField   | Timestamp for last update.            |                                        
 | created_by  | ForeignKey(User)| Reference to the user who created the post. |        
+
+
+## Backend Architecture:
+- 3-layer Architecture is being used.
+API layer: views.py
+Business layer: service.py
+Data Access layer: model.py
 
 
 ## Security:

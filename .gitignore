@@ -58,7 +58,7 @@ coverage.xml
 .pytest_cache/
 
 # Database
-*.sqlite3
+# *.sqlite3
 *.sqlite3-journal
 *.db
 
@@ -67,7 +67,7 @@ coverage.xml
 *.pyc
 
 # Django stuff
-db.sqlite3
+# db.sqlite3
 media/
 
 # Flask stuff
