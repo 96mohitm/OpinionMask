@@ -6,6 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from posts.error_util import format_errors
 from .serializers import PostSerializer
 from .services import PostService
+from posts.constants import ANON_FILTER_OPTIONS
 
 class PostListView(APIView):
     permission_classes = [IsAuthenticated]
@@ -13,7 +14,8 @@ class PostListView(APIView):
     def get(self, request):
         order_by = request.GET.get("ordering", "-created_at")
         my_post = request.GET.get("my_post", "false").lower() == "true"
-        posts = PostService.get_filtered_posts(request.user, order_by, my_post)
+        anon_filter = request.GET.get("anon_filter", ANON_FILTER_OPTIONS['ALL'])
+        posts = PostService.get_filtered_posts(request.user, order_by, my_post, anon_filter)
         serialized_data = PostService.format_post_data(posts)
         
         return Response(serialized_data)

@@ -1,10 +1,12 @@
 import axiosInstance from "./axiosInstance";
 
-export const fetchPosts = async (myPost:boolean = false) => {
+export const fetchPosts = async (myPost:boolean = false, anonFilter:string = "ALL") => {
   let endpoint = 'posts/';
   const params: any = {};
 
   params.my_post = myPost;
+  params.anon_filter = anonFilter;
+
   try {
     const response = await axiosInstance.get(endpoint, { params });
     return response.data;

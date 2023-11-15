@@ -1,0 +1,5 @@
+ANON_FILTER_OPTIONS = {
+  'ALL': 'ALL',
+  'ANON': 'ANON',
+  'NON_ANON': 'NON_ANON',
+}

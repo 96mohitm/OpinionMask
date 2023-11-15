@@ -16,6 +16,7 @@ type Post = {
 const PostPage = () => {
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
   const [myPost, setMyPost] = useState<boolean>(false);
+  const [anonFilter, setAnonFilter] = useState("ALL");
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
@@ -41,17 +42,21 @@ const PostPage = () => {
   }, []);
 
   useEffect(() => {
-    fetchPosts(myPost)
+    fetchPosts(myPost, anonFilter)
       .then(data => {
         setFilteredPosts(data);
       })
       .catch(error => {
         console.error("Error while fetching data");
       })
-  }, [myPost])
+  }, [myPost, anonFilter])
 
   const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setMyPost(event.target.value === 'my');
+  };
+
+  const handleAnonFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setAnonFilter(event.target.value);
   };
 
   return (
@@ -72,14 +77,26 @@ const PostPage = () => {
         </div>
         <CreatePostForm fetchData={fetchData} />
         <div className="mb-4">
-          <select
-            className="mt-1 block w-32 py-2 px-3 border border-black bg-primary text-[#7f8084] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-white focus:border-white"
-            value={myPost ? 'my' : 'all'}
-            onChange={handleFilterChange}
-          >
-            <option value="my">My Posts</option>
-            <option value="all">All Posts</option>
-          </select>
+          <div className='flex justify-between'>
+            <select
+              className="mt-1 block w-32 py-2 px-2 border border-black bg-[#27292d] text-[#7f8084] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-white focus:border-white"
+              value={myPost ? 'my' : 'all'}
+              onChange={handleFilterChange}
+            >
+              <option value="my">My Posts</option>
+              <option value="all">My feed</option>
+            </select>
+
+            <select
+              className="mt-1 block w-48 py-2 px-2 border border-black bg-[#27292d] text-[#7f8084] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-white focus:border-white"
+              value={anonFilter}
+              onChange={handleAnonFilterChange}
+            >
+              <option value="ALL">All Posts</option>
+              <option value="NON_ANON">Non Anonymous Post</option>
+              <option value="ANON">Anonymous Posts</option>
+            </select>
+          </div>
         </div>
         <PostList filteredPosts={filteredPosts} />
       </div>

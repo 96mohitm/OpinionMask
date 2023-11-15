@@ -1,13 +1,24 @@
 # services.py
+from posts.constants import ANON_FILTER_OPTIONS
 from .models import Post
 
 class PostService:
   @staticmethod
-  def get_filtered_posts(user, order_by='-created_at', my_post=False):
-    if my_post:
-        return Post.objects.filter(created_by=user).order_by(order_by)
+  def get_filtered_posts(user, order_by='-created_at', my_post=False, anon_filter=ANON_FILTER_OPTIONS['ALL']):
+
+    if anon_filter == ANON_FILTER_OPTIONS['ALL']:
+      posts = Post.objects.all()
+    elif anon_filter == ANON_FILTER_OPTIONS['ANON']:
+      posts = Post.objects.filter(is_anon=True)
+    elif anon_filter == ANON_FILTER_OPTIONS['NON_ANON']:
+      posts = Post.objects.filter(is_anon=False)
     else:
-        return Post.objects.all().order_by(order_by)
+      raise ValueError("Invalid value for is_anon parameter")
+
+    if my_post:
+      posts = posts.filter(created_by=user)
+
+    return posts.order_by(order_by)
   
   @staticmethod
   def format_post_data(posts):
