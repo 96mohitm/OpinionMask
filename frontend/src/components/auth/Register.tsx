@@ -8,7 +8,6 @@ const Register: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
-  const [avatar, setAvatar] = useState<File | null>(null);
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
@@ -26,16 +25,12 @@ const Register: React.FC = () => {
     formData.append('username', username);
     formData.append('email', email);
     formData.append('password', password);
-    if (avatar) {
-      formData.append('avatar', avatar);
-    }
 
     try {
       const response = await registerUser({
         username: username,
         email: email,
         password: password,
-        avatar: avatar
       });
       
       if (response.status === 201) {
@@ -100,8 +95,8 @@ const Register: React.FC = () => {
         </form>
 
         <div className="mt-2 text-sm text-[#7f8084]">
-          <span className="text-gray-600">Already have an account?</span>
-          <Link to="/login" className="ml-2 hover:text-blue-600">Login →</Link>
+          <span className="text-[#7f8084]">Already have an account?</span>
+          <Link to="/login" className="ml-2 hover:text-blue-600 text-[#C5C7CA]">Login →</Link>
         </div>
       </div>
     </div>

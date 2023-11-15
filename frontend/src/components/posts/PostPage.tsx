@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import PostList from './PostList';
 import CreatePostForm from './CreatePostForm';
 import { fetchPosts } from '../../api/posts';
+import { useAuth } from '../../Auth';
+import { useNavigate } from 'react-router-dom';
 
 type Post = {
   id: number,
@@ -14,6 +16,8 @@ type Post = {
 const PostPage = () => {
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
   const [myPost, setMyPost] = useState<boolean>(false);
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   async function fetchData(myPost: boolean = false) {
     try {
@@ -22,7 +26,15 @@ const PostPage = () => {
     } catch (error) {
       console.error("Error fetching posts:", error);
     }
+    
   }
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/login');
+    }
+  }, [isAuthenticated, navigate]);
+
 
   useEffect(() => {
     fetchData();
@@ -32,7 +44,10 @@ const PostPage = () => {
     fetchPosts(myPost)
       .then(data => {
         setFilteredPosts(data);
-      });
+      })
+      .catch(error => {
+        console.error("Error while fetching data");
+      })
   }, [myPost])
 
   const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
