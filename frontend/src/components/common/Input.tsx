@@ -15,6 +15,7 @@ const Input: React.FC<InputProps> = ({ id, type, placeholder, value, onChange })
   return (
       <>
         <input
+          required
           id={id}
           type={showPassword ? 'text' : type}
           placeholder={`Enter your ${placeholder.toLowerCase()}`}

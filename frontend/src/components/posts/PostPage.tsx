@@ -5,6 +5,7 @@ import { fetchPosts } from '../../api/posts';
 import { useAuth } from '../../Auth';
 import { useNavigate } from 'react-router-dom';
 import { fetchUserProfile } from '../../api/auth';
+import Spinner from '../common/Spinner';
 
 type Post = {
   id: number,
@@ -14,22 +15,31 @@ type Post = {
   updated_at: string,
 };
 
+const DEFAULT_ANON_FILTER = "ALL";
+
 const PostPage = () => {
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
   const [myPost, setMyPost] = useState<boolean>(false);
-  const [anonFilter, setAnonFilter] = useState("ALL");
+  const [anonFilter, setAnonFilter] = useState(DEFAULT_ANON_FILTER);
   const { isAuthenticated, loading } = useAuth();
+  const [ isDataLoading, setIsDataLoading ] = useState(false);
   const [username, setUsename] = useState<string>("");
   const navigate = useNavigate();
 
-  async function fetchData(myPost: boolean = false) {
+  async function fetchData(myPost: boolean = false, anonFilter: string = DEFAULT_ANON_FILTER) {
+    setIsDataLoading(true);
+    const delayDuration = 500;
+
     try {
-      const data = await fetchPosts(myPost);
-      setFilteredPosts(data);
+      const data = await fetchPosts(myPost, anonFilter);
+      setTimeout(() => {
+        setFilteredPosts(data);
+        setIsDataLoading(false);
+      }, delayDuration);
     } catch (error) {
       console.error("Error fetching posts:", error);
+      setIsDataLoading(false);
     }
-    
   }
 
   useEffect(() => {
@@ -54,13 +64,7 @@ const PostPage = () => {
   }, []);
 
   useEffect(() => {
-    fetchPosts(myPost, anonFilter)
-      .then(data => {
-        setFilteredPosts(data);
-      })
-      .catch(error => {
-        console.error("Error while fetching data");
-      })
+    fetchData(myPost, anonFilter);
   }, [myPost, anonFilter])
 
   const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -76,7 +80,7 @@ const PostPage = () => {
   );
 
   return (
-    <div className="bg-primary text-white min-h-screen flex items-center justify-center">
+    <div className="bg-primary text-white min-h-screen flex justify-center">
       <div className="flex flex-col md:w-[700px] gap-10">
         {/* Content goes here */}
         <div>
@@ -114,7 +118,14 @@ const PostPage = () => {
             </select>
           </div>
         </div>
-        <PostList filteredPosts={filteredPosts} />
+        {
+          isDataLoading ?
+            <div className='flex justify-center'> <Spinner /> </div>
+            : <PostList filteredPosts={filteredPosts} />
+        }
+        <div className='flex justify-center mb-4'>
+          -- End of posts --
+        </div>
       </div>
     </div>
   );

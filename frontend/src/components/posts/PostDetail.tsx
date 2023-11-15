@@ -24,9 +24,9 @@ const PostDetail: React.FC<PostDetailProps> = ({ post }) => {
             <IoChatboxOutline color='#C5C7CA' className="absolute w-[20px] h-[17px] top-[3px] left-0" />
           </div>
           <div className="absolute w-[660px] h-[107px] top-[90px] left-[22px] bg-[#191920] rounded-[8px]">
-            <p className="absolute w-[551px] top-[16px] left-[80px] [font-family:'Inter-Regular',Helvetica] font-normal text-[#7f8084] text-[16px] tracking-[0] leading-[24px]">
+            <div className="absolute w-[551px] top-[16px] left-[80px] [font-family:'Inter-Regular',Helvetica] font-normal text-[#7f8084] text-[16px] tracking-[0] leading-[24px]" style={{ whiteSpace: 'pre-line' }}>
               {post.content}
-            </p>
+            </div>
             <div className="absolute w-[50px] h-[48px] top-[15px] left-[16px]">
               <div className="relative w-[48px] h-[48px] bg-[#27292d] rounded-[24px]">
                 <div className="absolute top-[15px] left-[15px] [font-family:'Inter-Medium',Helvetica] font-medium text-black text-[18px] tracking-[0] leading-[normal] whitespace-nowrap">
