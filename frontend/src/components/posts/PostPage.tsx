@@ -4,6 +4,7 @@ import CreatePostForm from './CreatePostForm';
 import { fetchPosts } from '../../api/posts';
 import { useAuth } from '../../Auth';
 import { useNavigate } from 'react-router-dom';
+import { fetchUserProfile } from '../../api/auth';
 
 type Post = {
   id: number,
@@ -18,6 +19,7 @@ const PostPage = () => {
   const [myPost, setMyPost] = useState<boolean>(false);
   const [anonFilter, setAnonFilter] = useState("ALL");
   const { isAuthenticated } = useAuth();
+  const [username, setUsename] = useState<string>("");
   const navigate = useNavigate();
 
   async function fetchData(myPost: boolean = false) {
@@ -36,9 +38,19 @@ const PostPage = () => {
     }
   }, [isAuthenticated, navigate]);
 
-
   useEffect(() => {
     fetchData();
+    async function fetchUserDetails() {
+      try {
+        const response = await fetchUserProfile();  
+        if (response.username) {
+          setUsename(response.username);
+        }
+      } catch (error) {
+        console.error('Failed to fetch user details:', error);
+      }
+    }
+    fetchUserDetails();
   }, []);
 
   useEffect(() => {
@@ -66,7 +78,7 @@ const PostPage = () => {
         <div>
           <div className="text-left mb-4">
             <div className="font-medium text-[28px] tracking-[0] leading-[normal]">
-              Hello Jane
+              Hello {username}
             </div>
           </div>
           <div className="text-left mb-4">
